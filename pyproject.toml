@@ -1,7 +1,76 @@
 [project]
-name = "fine-tuned-ocr-vlm"
+name = "psychometrer"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "torch          >= 2.7.1",
+    "torchaudio     >= 2.7.1",
+    "torchvision    >= 0.22.1",
+]
+
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu118", marker = "sys_platform == 'linux'" },
+    { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+]
+torchvision = [
+    { index = "pytorch-cu118", marker = "sys_platform == 'linux'" },
+    { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+]
+torchaudio = [
+    { index = "pytorch-cu118", marker = "sys_platform == 'linux'" },
+    { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+
+# [tool.taskipy.tasks]
+# test = "uv run pytest"
+
+
+[tool.ruff]
+# 1行の最大文字数
+line-length = 80
+exclude = [
+    "earlgrey/ai/export/executorch_exporters/*",
+    "earlgrey/ai/export/executorch_exporter.py",
+    "docs/*",
+]
+force-exclude = true
+
+[tool.ruff.lint]
+# チェックするエラーの種類
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    # "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    # "UP", # pyupgrade
+]
+# 除外するエラーの種類
+ignore = [
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+    "C901", # too complex
+    "W191", # indentation contains tabs
+    "B904", # raise ... from ... になっていない場合のエラーを無視
+]
